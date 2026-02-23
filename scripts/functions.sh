@@ -29,7 +29,7 @@ function createConfig() {
     cp config/client.ovpn $CLIENT_PATH
     sed -i 's/%HOST_TUN_PROTOCOL%/'"$HOST_TUN_PROTOCOL"'/g' $CLIENT_PATH/client.ovpn
 
-    echo -e "\nremote $HOST_ADDR_INT $HOST_TUN_PORT" >> "$CLIENT_PATH/client.ovpn"
+    echo -e "\nremote $HOST_ADDR $HOST_TUN_PORT" >> "$CLIENT_PATH/client.ovpn"
 
     # Embed client authentication files into config file
     cat <(echo -e '<ca>') \
@@ -84,16 +84,6 @@ EOF
     cp /opt/Dockovpn_data/pki/crl.pem /etc/openvpn
 
     cd "$APP_INSTALL_PATH"
-}
-
-function getVersion() {
-    local app_version="$APP_NAME $(cat $APP_INSTALL_PATH/config/VERSION)"
-
-    echo "$app_version"
-}
-
-function getVersionFull() {
-    echo "$(datef) $(getVersion)"
 }
 
 function listConfigs() {
@@ -201,18 +191,4 @@ function generateClientConfig() {
     fi
     echo "$(datef) $FILE_PATH file has been generated"
 
-    echo "$(datef) Config server started, download your $FILE_NAME config at http://$HOST_ADDR_INT:$HOST_CONF_PORT/"
-    echo "$(datef) NOTE: After you download your client config, http server will be shut down!"
-
-    { echo -ne "HTTP/1.1 200 OK\r\nContent-Length: $(wc -c <$FILE_PATH)\r\nContent-Type: $CONTENT_TYPE\r\nContent-Disposition: attachment; fileName=\"$FILE_NAME\"\r\nAccept-Ranges: bytes\r\n\r\n"; cat "$FILE_PATH"; } | nc -w0 -l 8080
-
-    echo "$(datef) Config http server has been shut down"
 }
-
-RESOLVED_HOST_ADDR=$(curl -s -H "X-DockoVPN-Version: $(getVersion) $0" https://ip.dockovpn.io)
-
-if [[ -n $HOST_ADDR ]]; then
-    export HOST_ADDR_INT=$HOST_ADDR
-else
-    export HOST_ADDR_INT=$RESOLVED_HOST_ADDR
-fi
