@@ -27,7 +27,7 @@ def metrics():
     with open(logfile, "r") as f:
         num_lines = sum(1 for _ in f)
 
-    returnvalue = 'connected_devices{name="' + os.environ['OVPN_NAME'] + '"} ' + str((num_lines - 8) / 2)
+    returnvalue = 'connected_devices{name="' + os.environ['HOST_ADDR'] + '"} ' + str((num_lines - 8) / 2)
     response = make_response(returnvalue, 200)
     response.mimetype = "text/plain"
     return response
@@ -37,7 +37,7 @@ def metrics():
 def content():
     content = open(logfile, 'r').read()
     filemodified = os.path.getmtime(logfile)
-    returnvalue = logfile + ': ' + str(time.ctime(filemodified)) + '\n\n' + content
+    returnvalue = os.environ['HOST_ADDR'] + ': ' + str(time.ctime(filemodified)) + '\n\n' + content
     response = make_response(returnvalue, 200)
     response.mimetype = "text/plain"
     return response
