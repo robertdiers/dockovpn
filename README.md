@@ -1,6 +1,8 @@
 
 # dockerized openvpn server
 
+Thanks to https://github.com/dockovpn/dockovpn team for your great work - happy to fork and customize your stuff ;-)
+
 ```bash
 docker run -d --cap-add=NET_ADMIN \
 -p 1194:1194/udp \
