@@ -11,11 +11,6 @@ docker run -d --cap-add=NET_ADMIN \
 --name dockovpn robertdiers/openvpn
 ```
 
-Connected clients can be read within the VPN:
-
-http://10.8.0.1:8080
-
-
 ### environment variables
 
 | Variable | Description | Default value |
