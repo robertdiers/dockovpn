@@ -68,6 +68,9 @@ iptables -A FORWARD -m state --state ESTABLISHED,RELATED -j ACCEPT
 
 iptables -t nat -A POSTROUTING -s 10.8.0.0/24 -o $ADAPTER -j MASQUERADE
 
+# start the python webserver to display the connected clients
+python3 "$APP_INSTALL_PATH/metrics.py" &
+
 cd "$APP_PERSIST_DIR"
 
 LOCKFILE=.gen

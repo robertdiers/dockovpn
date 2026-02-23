@@ -16,7 +16,7 @@ WORKDIR ${APP_INSTALL_PATH}
 COPY scripts .
 COPY config ./config
 
-RUN apk add --no-cache openvpn easy-rsa bash netcat-openbsd zip curl dumb-init iptables && \
+RUN apk add --no-cache openvpn easy-rsa bash netcat-openbsd zip curl dumb-init iptables py3-flask && \
     ln -s /usr/share/easy-rsa/easyrsa /usr/bin/easyrsa && \
     mkdir -p ${APP_PERSIST_DIR} && \
     cd ${APP_PERSIST_DIR} && \
